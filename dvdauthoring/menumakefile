@@ -1,0 +1,65 @@
+# include this in your menu makefiles
+
+convert=convert -size 576x384 xc:none
+	font=-font "Helvetica" -pointsize 22
+	black=-fill "rgb(255,255,255)" -stroke black -strokewidth 4
+	yellow=-fill "rgb(255,255,0)" -stroke black -strokewidth 4
+	red=-fill "rgb(255,0,0)" -stroke black -strokewidth 4
+	quantcolor=-type Palette -colors 3
+
+#gradient=gradient:"rgb(0,0,150)"-"rgb(0,0,50)"
+gradient=gradient:"rgb(0,0,0)"-"rgb(0,0,0)"
+
+define makemenu
+composite -compose Over -gravity center fgcanvas.png bg.png  -depth 8 menu.ppm
+#omposite -compose Src -gravity center fghi.png bgtrans.png  -colors 4 -depth 2 -type Palette hi.png
+#omposite -compose Src -gravity center fgsel.png bgtrans.png -colors 4 -depth 2 -type Palette sel.png
+endef
+
+define makevideo
+ffmpeg -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y menu.ac3
+mplex -V -f 8 -o menu.temp.mpg   menu.m2v menu.ac3 >> makemenu.log 2>&1
+spumux menu.xml < menu.temp.mpg > menu.mpg
+endef
+
+define ppmtoy4mpal
+ppmtoy4m -S 420mpeg2 -A 59:54 -F 25:1 -n 100 -r menu.ppm 2>>makemenu.log |   mpeg2enc -a 2 -f 8 -F 3 -n p -o menu.m2v >> makemenu.log 2>&1
+endef
+
+define ppmtoy4mntsc
+ppmtoy4m -S 420mpeg2 -A 10:11 -F 30000:1001 -n 119 -r menu.ppm 2>>makemenu.log |   mpeg2enc -a 2 -f 8 -F 4 -n n -o menu.m2v >> makemenu.log 2>&1
+endef
+
+define cleanup
+endef
+
+
+default:
+	@echo  Targets: pal ntsc palvideo ntscvideo clean 
+
+pal:
+	convert -size 720x576 $(gradient) -gravity center -matte bg.png 
+	convert -size 720x576 $(gradient) -gravity center -matte bgtrans.png 
+	perl mkimg.pl pal
+
+palvideo:
+	$(makemenu)
+	$(ppmtoy4mpal)
+	$(makevideo)
+
+ntsc:
+	convert -size 720x480 $(gradient) -gravity center -matte bg.png
+	perl mkimg.pl ntsc
+
+
+ntscvideo:
+	$(makemenu)
+	$(ppmtoy4mntsc)
+	$(makevideo)
+
+clean:
+	rm -f bg.png  fgcanvas.png
+	# rm fghi.png fgsel.png bgtrans.png
+	rm -f menu.ac3 menu.m2v menu.temp.mpg hi.png sel.png menu.ppm menu.xml
+	rm -f makemenu.log
+

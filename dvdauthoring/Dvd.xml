@@ -1,0 +1,42 @@
+<dvdauthor dest="./dvdfs">
+    <vmgm>
+        <menus>
+            <pgc entry="title">
+                <pre>{
+                  if(g3 eq 1) jump titleset 1 menu;
+                  if(g3 eq 2) jump titleset 2 menu;
+                  if(g3 eq 3) jump titleset 3 menu;
+                  if(g3 eq 4) jump titleset 4 menu;
+                  if(g3 eq 5) jump titleset 5 menu;
+                  if(g3 eq 6) jump titleset 6 menu;
+                  if(g3 eq 7) jump titleset 7 menu;
+                  if(g3 eq 8) jump titleset 8 menu;
+                  if(g3 eq 9) jump titleset 9 menu;
+                  if(g3 eq 10) jump titleset 10 menu;
+                  if(g3 eq 11) jump titleset 11 menu;
+                  if(g3 eq 12) jump titleset 12 menu;
+                  if(g3 eq 13) jump titleset 13 menu;
+                  if(g3 eq 14) jump titleset 14 menu;
+                  if(g3 eq 15) jump titleset 15 menu;
+                    g3=0;
+                    }</pre>
+                <vob file="./menu/menu.mpg" pause="inf" />
+                <button name="t0">{g3=1;jump titleset 1 menu;}</button>
+                <button name="t1">jump titleset 1 menu;</button>
+                <button name="t2">jump titleset 2 menu;</button>
+                <button name="t3">jump titleset 3 menu;</button>
+                <button name="t4">jump titleset 4 menu;</button>
+                <button name="t5">jump titleset 5 menu;</button>
+                <button name="t6">jump titleset 6 menu;</button>
+                <button name="t7">jump titleset 7 menu;</button>
+                <button name="t8">jump titleset 8 menu;</button>
+                <button name="t9">jump titleset 9 menu;</button>
+                <button name="t10">jump titleset 10 menu;</button>
+                <button name="t11">jump titleset 11 menu;</button>
+                <button name="t12">jump titleset 12 menu;</button>
+                <button name="t13">jump titleset 13 menu;</button>
+                <button name="t14">jump titleset 14 menu;</button>
+                <button name="t15">jump titleset 15 menu;</button>
+            </pgc>
+        </menus>
+    </vmgm>
