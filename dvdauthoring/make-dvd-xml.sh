@@ -10,7 +10,7 @@ do cd $x
     rm t.sh
     cat dvdpage* >> ../t.xml
     rm dvdpage*
-    for r in *.dv;do tovid -in $r -out $r -$type -dvd -noask;done
+    for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
     cd ..
 done
 
