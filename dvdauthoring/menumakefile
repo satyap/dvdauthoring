@@ -58,8 +58,7 @@ ntscvideo:
 	$(makevideo)
 
 clean:
-	rm -f bg.png  fgcanvas.png
-	# rm fghi.png fgsel.png bgtrans.png
+	rm -f bg.png fgcanvas.png bgtrans.png
 	rm -f menu.ac3 menu.m2v menu.temp.mpg hi.png sel.png menu.ppm menu.xml
 	rm -f makemenu.log
 
