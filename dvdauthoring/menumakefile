@@ -17,7 +17,7 @@ composite -compose Over -gravity center fgcanvas.png bg.png  -depth 8 menu.ppm
 endef
 
 define makevideo
-ffmpeg -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y menu.ac3
+ffmpeg -ar 48000 -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y menu.ac3
 mplex -V -f 8 -o menu.temp.mpg   menu.m2v menu.ac3 >> makemenu.log 2>&1
 spumux menu.xml < menu.temp.mpg > menu.mpg
 endef
