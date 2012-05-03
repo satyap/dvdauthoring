@@ -183,7 +183,7 @@ sub make_canvas() {
     if($extra_image) {
         create_image("tcanvas$num.png", $height, $white, $menu, $black);
         #print `$convert $font $black -draw \"$menu \" -stroke none -draw \"$menu \" tcanvas$num.png`;
-        print `composite -compose over -gravity southeast $extra_image tcanvas$num.png fgcanvas.png`;
+        print `composite -compose over -gravity southeast -geometry "+40""+40" $extra_image tcanvas$num.png fgcanvas.png`;
         unlink("tcanvas$num.png");
     } else {
         create_image("fgcanvas$num.png", $height, $white, $menu, $black);
