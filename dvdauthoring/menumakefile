@@ -1,3 +1,4 @@
+# vim: set noexpandtab:
 # include this in your menu makefiles
 
 convert=convert -size 576x384 xc:none
@@ -19,6 +20,10 @@ endef
 define makevideo
 ffmpeg -ar 48000 -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y menu.ac3
 mplex -V -f 8 -o menu.temp.mpg   menu.m2v menu.ac3 >> makemenu.log 2>&1
+#ffmpeg -loglevel quiet -threads 4 \
+#    -loop_input -i "menu.ppm" -qscale 1 -r 29.97 -t 4 \
+#    -ar 48000 -t 4 -f s16le -acodec pcm_s16le -i /dev/zero -ab 64K -f mp2 -acodec mp2 \
+#    -map 0.0 -map 1.0 -sameq -f mpegts -y "menu.temp.mpg"
 spumux menu.xml < menu.temp.mpg > menu.mpg
 endef
 
@@ -62,3 +67,5 @@ clean:
 	rm -f menu.ac3 menu.m2v menu.temp.mpg hi.png sel.png menu.ppm menu.xml
 	rm -f makemenu.log
 
+distclean: clean
+	rm -f menu.mpg	
