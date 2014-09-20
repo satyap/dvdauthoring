@@ -259,25 +259,28 @@ sub getHeight($) {
 sub make_xml() {
     my $menu = shift;
     my $all = $#$menu + 1;
+    my $buttons = "";
+    my $jumps = "";
+    for(my $i=1;$i<=$#$menu; $i++) {
+        $buttons .= '<button name="t' . $i . '">jump titleset ' . $i . ' menu;</button>';
+        $buttons .= "\n";
+        $jumps .= "if(g3 eq " . ($i+1) . ") jump titleset " . $i . " menu;\n";
+    }
     my $ret = <<EOT;
 <dvdauthor dest="./dvdfs">
-    <vmgm>
-        <menus>
-            <pgc entry="title">
-                <pre>{
-                    g3=0;
-                    }</pre>
-                <vob file="./rootmenu/menu.mpg" pause="inf" />
-                <button name="t0">jump titleset $all menu;</button>
-EOT
-    for(my $i=1;$i<=$#$menu; $i++) {
-        $ret .= '<button name="t' . $i . '">jump titleset ' . $i . ' menu;</button>';
-        $ret .= "\n";
-    }
-    $ret .= <<EOT;
-            </pgc>
-        </menus>
-    </vmgm>
+  <vmgm>
+    <menus>
+      <pgc entry="title">
+        <pre>{
+$jumps
+          g3=0;
+            }</pre>
+        <vob file="./rootmenu/menu.mpg" pause="inf" />
+          <button name="t0">jump titleset $all menu;</button>
+$buttons
+      </pgc>
+    </menus>
+  </vmgm>
 EOT
     return $ret;
 }

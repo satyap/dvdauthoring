@@ -348,7 +348,7 @@ sub printdvdxml() {
 $vids 
     <pgc>
     <pre>{
-if (g3 gt 0) g3=200;
+if (g3 gt 0) g3=999;
 }</pre>
     $playall
     <post>{
