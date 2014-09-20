@@ -28,4 +28,8 @@ make_canvas($type, $menu, $num, "nirmate.png");
 
 make_fg($menu, $lines, $type, $num);
 
+open(XML, ">../Dvd.xml") || die "menu.xml: $!";
+print XML make_xml(\@menu);
+close(XML);
+
 exit;

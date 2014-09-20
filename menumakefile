@@ -40,7 +40,7 @@ endef
 
 
 default:
-	@echo  Targets: pal ntsc palvideo ntscvideo clean 
+	@echo  Targets: pal ntsc palvideo ntscvideo clean distclean
 
 pal:
 	convert -size 720x576 $(gradient) -gravity center -matte bg.png 

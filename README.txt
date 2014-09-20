@@ -6,6 +6,8 @@ to point at the real location of menumakefile
 
 Files:
 
+make-dvd-xml.sh: Script that drives the whole thing.
+
 menubuttons.pl: Library script to make menu button XML. Don't run this
 directly.
 

@@ -8,13 +8,15 @@ my $lib = '/home/satyap/dvdauthoring';
 require 'menubuttons.pl';
 
 my %opts;
-getopt('stbpfml', \%opts);
+getopt('aistbpfml', \%opts);
 my $type=$opts{'t'} || '';
 my $bgfile=$opts{'b'} || '';
 my $subtitles=$opts{'s'} || 0;
 my $pagenumoffset=$opts{'p'} || 0;
 my $pathprefix=$opts{'l'} || '';
 my $menuloc=$opts{'m'} || 'menu';
+my $inputfile=$opts{'i'} || 'desc.txt';
+my $playallonly=$opts{'a'} || 0;
 
 my $bestfit=$opts{'f'} || 0;
 # 1= will try to reduce extra menu pages by cramming 1 more item into each menu page
@@ -22,7 +24,7 @@ my $bestfit=$opts{'f'} || 0;
 
 if($type ne 'pal' && $type ne 'ntsc') { &syntax };
 
-my @lines=grep {/.+/} (`cat desc.txt`);
+my @lines=grep {/.+/} (`cat $inputfile`);
 
 my $menuitem=-1;
 my @set;
@@ -49,7 +51,7 @@ foreach my $line (@lines) {
     else {
         $numfiles=1;
         $menuitem++;
-        if($menuitem>$maxmenuitem) {
+        if(!$playallonly && $menuitem>$maxmenuitem) {
             $setnum++; $menuitem=0;
         }
         $set[$setnum][$menuitem][0]=$line;
@@ -111,6 +113,8 @@ Usage: $0 -t (pal|ntsc) [-b bg.jpg] [-p num] [-s 1] [-f 1] [-l "../200701/"] [-m
        put the menu files in ../menus/200701 like ../menus/200701/menu.mpg.
        It should be relative to where the videos are (i.e. to the value of -l)
        Default: -m menu (so puts the files in menu/menu.mpg)
+ -i   = input file name. Default desc.txt
+ -a 1 = Show only the "Play all in this set" menu item. Default: 0
        
 EOF
     exit;
@@ -177,7 +181,7 @@ sub printmenu() {
     my $convertbg="convert -size $size gradient:\"rgb(0,0,0)\"-\"rgb(0,0,0)\" $menuloc/bg.png";
 
     if($bgfile ne '') {
-        # If a background is gicen, use it instead of creating a black image.
+        # If a background is given, use it instead of creating a black image.
         $convertbg="convert -resize '$abssize' $bgfile $menuloc/bg.png";
     }
 
@@ -242,6 +246,7 @@ sub calcmenu() {
     $lines.="\ntext 1,$y > ";
     $y+=30;
     foreach my $title (@$page) {
+        next if $playallonly;
         my $title=$title->[0];
         $title=~m/^([.0-9]+)\S*?\s/;
         my $d=$1;
@@ -320,6 +325,9 @@ sub printdvdxml() {
     
     my $lastbutton=$#$page + 2;
     my $playalltitle=$#$page + 2;
+    if($playallonly) {
+        $vids = $buttons = '';
+    }
 
     $ret.=<<TXT;
     cat <<EOF > dvdpage$num.xml

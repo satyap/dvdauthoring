@@ -255,4 +255,29 @@ sub getHeight($) {
     my $type=shift;
     $type eq 'ntsc' ? '480':'576';
 }
+
+sub make_xml() {
+    my $menu = shift;
+    my $all = $#$menu + 1;
+    my $ret = <<EOT;
+<dvdauthor dest="./dvdfs">
+    <vmgm>
+        <menus>
+            <pgc entry="title">
+                <vob file="./rootmenu/menu.mpg" pause="inf" />
+                <button name="t0">jump titleset $all menu;</button>
+EOT
+    for(my $i=1;$i<=$#$menu; $i++) {
+        $ret .= '<button name="t' . $i . '">jump titleset ' . $i . ' menu;</button>';
+        $ret .= "\n";
+    }
+    $ret .= <<EOT;
+            </pgc>
+        </menus>
+    </vmgm>
+EOT
+    print $ret;
+    return $ret;
+}
+
 1;
