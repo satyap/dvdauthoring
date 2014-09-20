@@ -19,7 +19,7 @@ do (
       sed "s/^/$x\//;" < desc.txt >> ../menus/_playall/desc.txt
       cat dvdpage* >> ../$xmlfile
       rm dvdpage*
-      #for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
+      for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
     )
 done
 
@@ -28,6 +28,8 @@ done
   perl ~/dvdauthoring/vid2dvd.pl -t $type -p 1 -m menus/_playall -a 1 > t.sh
   sh t.sh
   rm t.sh
+  mv menus/_playall/* .
+  rmdir menus/_playall menus
   cat dvdpage* >> ../../$xmlfile
   rm dvdpage*
 )

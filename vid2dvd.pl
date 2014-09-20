@@ -241,7 +241,7 @@ sub calcmenu() {
 
     my $y=0;
     my $lineoff=0;
-    $text.="\ntext 15,$y" . ' Play all in this set';
+    $text.="\ntext 15,$y" . ($playallonly ? ' Play all on disc' : ' Play all in this set');
     push(@$coords, [$y,$y+30]);
     $lines.="\ntext 1,$y > ";
     $y+=30;
@@ -327,6 +327,8 @@ sub printdvdxml() {
     my $playalltitle=$#$page + 2;
     if($playallonly) {
         $vids = $buttons = '';
+        $playalltitle=1;
+        $lastbutton=1;
     }
 
     $ret.=<<TXT;

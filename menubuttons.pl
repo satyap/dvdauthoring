@@ -264,6 +264,9 @@ sub make_xml() {
     <vmgm>
         <menus>
             <pgc entry="title">
+                <pre>{
+                    g3=0;
+                    }</pre>
                 <vob file="./rootmenu/menu.mpg" pause="inf" />
                 <button name="t0">jump titleset $all menu;</button>
 EOT
@@ -276,7 +279,6 @@ EOT
         </menus>
     </vmgm>
 EOT
-    print $ret;
     return $ret;
 }
 
