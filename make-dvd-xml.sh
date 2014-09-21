@@ -8,18 +8,19 @@ rm $xmlfile
 (cd rootmenu && make $type ${type}video clean)
 
 for x in 20*
-do (
+do 
+    (
       cd $x
       echo $x
-      page=`expr $page + 1`
       rm -f dvdpage*
-      perl ~/dvdauthoring/vid2dvd.pl -t $type -l $x/ -p $page -m ../menus/$x > t.sh
+      perl ~/dvdauthoring/vid2dvd.pl -t $type -l $x/ -p $page -m ../menus/$x -f 1 > t.sh
       sh t.sh
       rm t.sh
       cat dvdpage* >> ../$xmlfile
       rm dvdpage*
       for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
     )
+    page=`expr $page + 1`
 done
 
 echo "</dvdauthor>" >> $xmlfile

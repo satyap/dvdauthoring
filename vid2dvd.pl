@@ -294,7 +294,7 @@ sub printdvdxml() {
     
     my $vids='';
     my $playall='';
-    my $pause='pause="2"';
+    my $pause=' pause="2"';
     
     my $buttons='';
     for(my $i=0;$i<=$#$page;$i++) {
@@ -305,9 +305,9 @@ sub printdvdxml() {
         for(my $j=1;$j<=$#$vid; $j++) {
             my $vob;
             if ($subtitles) {
-                $vob="  <vob file=\"${pathprefix}$vid->[$j].st.mpg\" ";
+                $vob="  <vob file=\"${pathprefix}$vid->[$j].st.mpg\"";
             } else {
-                $vob="  <vob file=\"${pathprefix}$vid->[$j].mpg\" ";
+                $vob="  <vob file=\"${pathprefix}$vid->[$j].mpg\"";
             }
             $vids.= $vob;
             $playall.= $vob;
