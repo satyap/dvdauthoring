@@ -161,7 +161,7 @@ sub printmenu() {
     #my $drawyellow='-fill "rgb(255,255,0)" -stroke black -strokewidth 3 ';
     #my $drawred='-fill "rgb(255,0,0)" -stroke black -strokewidth 3 ';
     #my $palette='-type Palette -colors 3 ';
-    $pagenum="gravity southeast text 0,0 \\\"$pagenum\\\"" if($pagenum>=$num);
+    my $pagenum_text="gravity southeast text ";
     my ($abssize, $size, $ppmtoy4m, $mpeg2enc, $height);
     if($type eq 'pal') {
         $size='720x576';
@@ -169,6 +169,7 @@ sub printmenu() {
         $ppmtoy4m="59:54 -F 25:1 -n 100";
         $mpeg2enc='-F 3 -n p';
         $height='576';
+        $pagenum_text .= "" . (720-576) . "," . (576-384);
     }
     if($type eq 'ntsc') {
         $size='720x480';
@@ -176,7 +177,9 @@ sub printmenu() {
         $ppmtoy4m="10:11 -F 30000:1001 -n 119";
         $mpeg2enc='-F 4 -n n';
         $height='480';
+        $pagenum_text .= "" . (720-576-16) . "," . (480-384-16);
     }
+    $pagenum_text .= " \\\"$pagenum\\\"";
 
     my $convertbg="convert -size $size gradient:\"rgb(0,0,0)\"-\"rgb(0,0,0)\" $menuloc/bg.png";
 
@@ -191,6 +194,11 @@ sub printmenu() {
 
     $ret.= <<EOF;
 $convertbg
+# superimpose the page number
+convert +antialias $font $drawblack -draw "$pagenum_text" \\
+    -stroke none -draw "$pagenum_text" \\
+    $menuloc/bg.png $menuloc/bg.png
+
 perl $lib/menuMask.pl $menuloc/fgcanvas$num.png $height 255,255,255 "$text"
 EOF
 #convert -size $size xc:none -matte $menuloc/bgtrans.png
@@ -222,9 +230,9 @@ ppmtoy4m -S 420mpeg2 -A $ppmtoy4m -r $menuloc/menu.ppm 2>> $logfile |   mpeg2enc
 mplex -V -f 8 -o $menuloc/menu.temp.mpg $menuloc/menu.m2v $menuloc/menu.ac3 >> $logfile 2>&1
 spumux $menuloc/menu$num.xml < $menuloc/menu.temp.mpg > $menuloc/menu$num.mpg
 
-#rm $menuloc/fghi$num.png $menuloc/fgsel$num.png $menuloc/bgtrans.png
-rm $menuloc/bg.png $menuloc/fgcanvas$num.png
-rm $menuloc/hi$num.png $menuloc/sel$num.png $menuloc/menu.ppm $menuloc/menu$num.xml
+#rm -f $menuloc/fghi$num.png $menuloc/fgsel$num.png $menuloc/bgtrans.png
+rm -f $menuloc/bg.png $menuloc/fgcanvas$num.png
+rm -f $menuloc/hi$num.png $menuloc/sel$num.png $menuloc/menu.ppm $menuloc/menu$num.xml
 rm $logfile $menuloc/menu.m2v $menuloc/menu.temp.mpg 
 EOF
 
@@ -288,7 +296,7 @@ return $ret;
 sub printdvdxml() {
     my $num=shift;
     my $page=shift;
-    my $pagenum=shift;
+    my $pagenum=shift() - 1;
     my $nextpage=$pagenum+1;
     my $ret='';
     

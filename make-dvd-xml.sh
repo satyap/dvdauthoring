@@ -9,6 +9,7 @@ rm $xmlfile
 
 for x in 20*
 do 
+    page=`expr $page + 1`
     (
       cd $x
       echo $x
@@ -20,7 +21,6 @@ do
       rm dvdpage*
       for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
     )
-    page=`expr $page + 1`
 done
 
 echo "</dvdauthor>" >> $xmlfile
