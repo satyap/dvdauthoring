@@ -1,5 +1,6 @@
 type=ntsc
 xmlfile=Dvd.xml
+dvdauthoring=~/dvdauthoring
 
 page=0
 rm -rf dvdfs
@@ -14,12 +15,12 @@ do
       cd $x
       echo $x
       rm -f dvdpage*
-      perl ~/dvdauthoring/vid2dvd.pl -t $type -l $x/ -p $page -m ../menus/$x -f 1 > t.sh
+      perl $dvdauthoring/vid2dvd.pl -t $type -l $x/ -p $page -m ../menus/$x -f 1 > t.sh
       sh t.sh
       rm t.sh
       cat dvdpage* >> ../$xmlfile
       rm dvdpage*
-      for r in *.dv;do tovid mpg -in $r -out $r -$type -dvd -noask;done
+      for r in *.dv;do sh $dvdauthoring/dv2${type}.sh $r $r.mpg ;done
     )
 done
 
