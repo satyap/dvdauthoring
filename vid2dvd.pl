@@ -44,7 +44,9 @@ if($bestfit) {
 foreach my $line (@lines) {
     next if $line=~/^#/;
     chomp($line);
-    if($line=~/\.dv$/ || $line=~/^dscn/ ||$line=~/\.mpg$/ || $line=~/\.mpg\.out$/) {
+    $line=~s/^\s+//;
+    $line=~s/\s+$//;
+    if($line=~/\.dv$/ || $line=~/^dscn/ || $line=~/\.mpg$/ || $line=~/\.mpg\.out$/) {
         $set[$setnum][$menuitem][$numfiles]=$line;
         $numfiles++;
     }
