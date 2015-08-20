@@ -83,7 +83,7 @@ $dvdxml
 ################# menu xml:
 $menuxml
 ################# menu images and video:
-ffmpeg -ar 48000 -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y $menuloc/menu.ac3
+avconv -ar 48000 -f s16le -i /dev/zero -ac 2 -ar 48000 -ab 224k -t 4 -acodec ac3 -y $menuloc/menu.ac3
 $menu
 rm $menuloc/menu.ac3
 EOF

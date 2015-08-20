@@ -2,7 +2,7 @@ echo Contains many common commands. View the file.
 exit;
 
 # convert mp3 to CD Audio, sampling rate 44100Hz, 2 channels, force wav.
-ffmpeg -i input.mp3 -acodec pcm_s16le -ar 44100 -ac 2 -f wav out.wav
+avconv -i input.mp3 -acodec pcm_s16le -ar 44100 -ac 2 -f wav out.wav
 
 
 base=`echo $1|sed "s/.mp3//;"`
@@ -38,7 +38,7 @@ echo "Converting audio"
 
 echo "...to ac3"
 
-ffmpeg -i ${base}.mp3 -ab 112 -ar 48000 -ac 2 -acodec ac3 -y ${base}.ac3
+avconv -i ${base}.mp3 -ab 112 -ar 48000 -ac 2 -acodec ac3 -y ${base}.ac3
 
 echo "Multiplexing"
 
@@ -53,7 +53,7 @@ exit;
 exit;
 mplayer  -quiet -vc null -vo null -ao pcm:waveheader:file=audiodump.wav ${base}.mp3
 
-ffmpeg -i audiodump.wav -ab 224 -ar 48000 -ac 2 -acodec ac3 -y "test.ac3"
+avconv -i audiodump.wav -ab 224 -ar 48000 -ac 2 -acodec ac3 -y "test.ac3"
 
 
 r=500
