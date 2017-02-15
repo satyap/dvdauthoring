@@ -20,12 +20,12 @@ do
       rm t.sh
       cat dvdpage* >> ../$xmlfile
       rm dvdpage*
-      for r in *.dv;do sh $dvdauthoring/dv2${type}.sh $r $r.mpg ;done
+      for r in *.dv *.avi;do sh $dvdauthoring/dv2${type}.sh $r $r.mpg ;done
     )
 done
 
 echo "</dvdauthor>" >> $xmlfile
-dvdauthor -x $xmlfile
+VIDEO_FORMAT=$type dvdauthor -x $xmlfile -o dvdfs
 genisoimage -dvd-video -o ${type}dvd.iso dvdfs
 
 echo
