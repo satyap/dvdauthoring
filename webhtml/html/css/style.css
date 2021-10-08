@@ -1,0 +1,10 @@
+.vidgroup {
+    border: 1px dotted;
+    background-color: #ffffcc;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.video {
+    overflow: hidden;
+}
