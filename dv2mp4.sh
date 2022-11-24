@@ -1,5 +1,4 @@
-ffmpeg -i "${1}" -c:v libx264 -preset slower -crf 17 -pix_fmt yuv420p \
-    -c:a aac "${1}.mp4"
+ffmpeg -i "${1}" -c:v libx264 -preset slower -crf 16 -pix_fmt yuv420p -c:a aac "${1}.mp4"
 
 #http://stackoverflow.com/questions/21184014/ffmpeg-converted-mp4-file-does-not-play-in-firefox-and-chrome
 #ffmpeg -i ${1} -b:a 128k -b:v 400k -s 720x480 -pix_fmt yuv420p ${1}.mp4
